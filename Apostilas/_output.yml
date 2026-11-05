@@ -13,8 +13,8 @@ pdf_document:
   df_print: kable
   includes:
     in_header:
-      - ../../tex/preamble.tex
-      - ../../tex/unicode-sanitizer.tex
+      - tex/preamble.tex
+      - tex/unicode-sanitizer.tex
   template: null
   pandoc_args: [
     "--variable", "classoption=oneside",
