@@ -1,1 +1,28 @@
+# POPs/Bancada/_output.yml
+# Padrão único de PDF para todos os POPs (solo e bookdown).
+# Fonte de verdade dos pacotes LaTeX: preamble.tex (não duplicar em extra_dependencies).
 
+pdf_document:
+  latex_engine: xelatex
+  citation_package: natbib
+  keep_tex: no
+  toc: true
+  toc_depth: 2
+  number_sections: false
+  fig_caption: true
+  fig_width: 8
+  fig_height: 10
+  df_print: kable
+  includes:
+    in_header:
+      - ../../tex/preamble.tex
+      - ../../tex/unicode-sanitizer.tex
+  template: null
+  pandoc_args: [
+    "--variable", "classoption=oneside",
+    "--syntax-highlighting=tango",
+    "--pdf-engine-opt=-interaction=nonstopmode",
+    "--pdf-engine-opt=-file-line-error",
+    "--variable", "tables=yes",
+    "--columns=100"
+  ]
