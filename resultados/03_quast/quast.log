@@ -1,0 +1,86 @@
+/home/lusa/miniconda3/envs/quast/bin/quast genomas_completos/spades/pc1_scaffolds.fasta genomas_completos/spades/pc2_scaffolds.fasta genomas_completos/spades/pc3_scaffolds.fasta genomas_completos/spades/pc4_scaffolds.fasta -o resultados/03_quast -t 4
+
+Version: 5.3.0
+
+System information:
+  OS: Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39 (linux_64)
+  Python version: 3.11.18
+  CPUs number: 12
+
+Started: 2026-11-04 09:13:24
+
+Logging to /home/lusa/disciplina_gen_bac/resultados/03_quast/quast.log
+
+CWD: /home/lusa/disciplina_gen_bac
+Main parameters: 
+  MODE: default, threads: 4, min contig length: 500, min alignment length: 65, min alignment IDY: 95.0, \
+  ambiguity: one, min local misassembly length: 200, min extensive misassembly length: 1000
+
+Contigs:
+  Pre-processing...
+  1  genomas_completos/spades/pc1_scaffolds.fasta ==> pc1_scaffolds
+  2  genomas_completos/spades/pc2_scaffolds.fasta ==> pc2_scaffolds
+  3  genomas_completos/spades/pc3_scaffolds.fasta ==> pc3_scaffolds
+  4  genomas_completos/spades/pc4_scaffolds.fasta ==> pc4_scaffolds
+
+2026-11-04 09:13:25
+Running Basic statistics processor...
+  Contig files: 
+    1  pc1_scaffolds
+    2  pc2_scaffolds
+    3  pc3_scaffolds
+    4  pc4_scaffolds
+  Calculating N50 and L50...
+    1  pc1_scaffolds, N50 = 116506, L50 = 16, auN = 142165.1, Total length = 5804519, GC % = 56.74, # N's per 100 kbp =  8.96
+    2  pc2_scaffolds, N50 = 116506, L50 = 16, auN = 142165.1, Total length = 5804519, GC % = 56.74, # N's per 100 kbp =  8.96
+    3  pc3_scaffolds, N50 = 399553, L50 = 5, auN = 464835.7, Total length = 5340867, GC % = 55.00, # N's per 100 kbp =  7.68
+    4  pc4_scaffolds, N50 = 1494759, L50 = 1, auN = 1241224.6, Total length = 1836794, GC % = 40.32, # N's per 100 kbp =  27.22
+  Drawing Nx plot...
+    saved to /home/lusa/disciplina_gen_bac/resultados/03_quast/basic_stats/Nx_plot.pdf
+  Drawing cumulative plot...
+    saved to /home/lusa/disciplina_gen_bac/resultados/03_quast/basic_stats/cumulative_plot.pdf
+  Drawing GC content plot...
+    saved to /home/lusa/disciplina_gen_bac/resultados/03_quast/basic_stats/GC_content_plot.pdf
+  Drawing pc1_scaffolds GC content plot...
+    saved to /home/lusa/disciplina_gen_bac/resultados/03_quast/basic_stats/pc1_scaffolds_GC_content_plot.pdf
+  Drawing pc2_scaffolds GC content plot...
+    saved to /home/lusa/disciplina_gen_bac/resultados/03_quast/basic_stats/pc2_scaffolds_GC_content_plot.pdf
+  Drawing pc3_scaffolds GC content plot...
+    saved to /home/lusa/disciplina_gen_bac/resultados/03_quast/basic_stats/pc3_scaffolds_GC_content_plot.pdf
+  Drawing pc4_scaffolds GC content plot...
+    saved to /home/lusa/disciplina_gen_bac/resultados/03_quast/basic_stats/pc4_scaffolds_GC_content_plot.pdf
+  Drawing Coverage histogram (bin size: 1x)...
+    saved to /home/lusa/disciplina_gen_bac/resultados/03_quast/basic_stats/coverage_histogram.pdf
+  Drawing pc1_scaffolds coverage histogram (bin size: 1x)...
+    saved to /home/lusa/disciplina_gen_bac/resultados/03_quast/basic_stats/pc1_scaffolds_coverage_histogram.pdf
+  Drawing pc2_scaffolds coverage histogram (bin size: 1x)...
+    saved to /home/lusa/disciplina_gen_bac/resultados/03_quast/basic_stats/pc2_scaffolds_coverage_histogram.pdf
+  Drawing pc3_scaffolds coverage histogram (bin size: 3x)...
+    saved to /home/lusa/disciplina_gen_bac/resultados/03_quast/basic_stats/pc3_scaffolds_coverage_histogram.pdf
+  Drawing pc4_scaffolds coverage histogram (bin size: 1x)...
+    saved to /home/lusa/disciplina_gen_bac/resultados/03_quast/basic_stats/pc4_scaffolds_coverage_histogram.pdf
+Done.
+
+NOTICE: Genes are not predicted by default. Use --gene-finding or --glimmer option to enable it.
+
+2026-11-04 09:13:27
+Creating large visual summaries...
+This may take a while: press Ctrl-C to skip this step..
+  1 of 2: Creating PDF with all tables and plots...
+  2 of 2: Creating Icarus viewers...
+Done
+
+2026-11-04 09:13:27
+RESULTS:
+  Text versions of total report are saved to /home/lusa/disciplina_gen_bac/resultados/03_quast/report.txt, report.tsv, and report.tex
+  Text versions of transposed total report are saved to /home/lusa/disciplina_gen_bac/resultados/03_quast/transposed_report.txt, transposed_report.tsv, and transposed_report.tex
+  HTML version (interactive tables and plots) is saved to /home/lusa/disciplina_gen_bac/resultados/03_quast/report.html
+  PDF version (tables and plots) is saved to /home/lusa/disciplina_gen_bac/resultados/03_quast/report.pdf
+  Icarus (contig browser) is saved to /home/lusa/disciplina_gen_bac/resultados/03_quast/icarus.html
+  Log is saved to /home/lusa/disciplina_gen_bac/resultados/03_quast/quast.log
+
+Finished: 2026-11-04 09:13:27
+Elapsed time: 0:00:03.037561
+NOTICEs: 1; WARNINGs: 1; non-fatal ERRORs: 0
+
+Thank you for using QUAST!

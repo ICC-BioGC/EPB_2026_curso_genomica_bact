@@ -1,0 +1,25 @@
+All statistics are based on contigs of size >= 500 bp, unless otherwise noted (e.g., "# contigs (>= 0 bp)" and "Total length (>= 0 bp)" include all contigs).
+
+Assembly                    pc1_scaffolds  pc2_scaffolds  pc3_scaffolds  pc4_scaffolds
+# contigs (>= 0 bp)         471            471            69             52           
+# contigs (>= 1000 bp)      133            133            25             5            
+# contigs (>= 5000 bp)      84             84             20             4            
+# contigs (>= 10000 bp)     71             71             18             4            
+# contigs (>= 25000 bp)     50             50             18             4            
+# contigs (>= 50000 bp)     39             39             16             3            
+Total length (>= 0 bp)      5851446        5851446        5349708        1845341      
+Total length (>= 1000 bp)   5792558        5792558        5334651        1835843      
+Total length (>= 5000 bp)   5649897        5649897        5317511        1831156      
+Total length (>= 10000 bp)  5548689        5548689        5300211        1831156      
+Total length (>= 25000 bp)  5221528        5221528        5300211        1831156      
+Total length (>= 50000 bp)  4824392        4824392        5239047        1791253      
+# contigs                   149            149            34             6            
+Largest contig              457808         457808         921781         1494759      
+Total length                5804519        5804519        5340867        1836794      
+GC (%)                      56.74          56.74          55.00          40.32        
+N50                         116506         116506         399553         1494759      
+N90                         24801          24801          124756         148089       
+auN                         142165.1       142165.1       464835.7       1241224.6    
+L50                         16             16             5              1            
+L90                         51             51             12             3            
+# N's per 100 kbp           8.96           8.96           7.68           27.22        
