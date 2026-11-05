@@ -121,11 +121,9 @@ do
         -o resultados/02_spades/${sample} \
         -t 4 \
         -m 8 \
-        > logs/02_spades/${sample}.log 2>&1 &
+        > logs/02_spades/${sample}.log 2>&1
 
 done
-
-wait
 
 echo "Montagens finalizadas!"
 ```
