@@ -1,39 +1,36 @@
-## **Guia para Instalação do WSL Debian via script**
+# **Guia para Instalação do WSL Debian via script**
 
----
-
-### **Baixando o Script**
+## **Baixando o Script**
 
 1. Entre no Google Drive [clicando aqui](https://drive.google.com/drive/folders/1QmEnn0U5iFkLSvpfMnQvpYXa_6PBbtQ-?usp=drive_link)  
 2. Baixe o arquivo `setup-wsl-debian-conda.rar`  
 3. Mova o arquivo `setup-wsl-debian-conda.rar` para sua área de trabalho  
 4. Extraia o arquivo obtendo `setup-wsl-debian-conda.ps1`
 
-### **Executando o Powershell**
+## **Executando o Powershell**
 
 1. Abra o menu iniciar do Windows e busque por **Powershell**  
 2. Abra o **Powershell** como administrador (deve aparecer na barra a direita, ou use o botão direito do mouse)  
 3. Na linha de comando do **Powershell** copie e cole os comandos um por linha dando enter:
 
-`cd ~/Desktop`
-
-`Set-ExecutionPolicy Bypass -Scope Process -Force`
-
-`./setup-wsl-debian-conda.ps1`
+```{bash, eval=FALSE}
+> cd ~/Desktop
+> Set-ExecutionPolicy Bypass -Scope Process -Force
+./setup-wsl-debian-conda.ps1
+```
 
 4. Depois que o script terminar de rodar rode os comandos um por linha dando enter:
-
-`wsl --list --verbose`
-
-`wsl -d Debian`
-
-`cd  ~`
-
-`mkdir aula`
+   
+```{bash, eval=FALSE}
+wsl --list --verbose
+wsl -d Debian
+cd  ~
+mkdir aula
+```
 
 5. Pronto, agora seu WSL está pronto para o uso\!
 
-### **Preparando os Datasets do caso clínico**
+## **Preparando os Datasets do caso clínico**
 
 1. Entre no Google Drive \[clicando aqui\]  
 2. Baixe o arquivo `paired_end_data.rar`  
@@ -48,19 +45,16 @@
 8. Cole a pasta `paired_end_data`  
 9. Depois rode os comandos um por linha dando enter:
 
-`cd aula`
+```{bash, eval=FALSE}
+cd aula
+find . -name "*Zone.Identifier" -type f -delete
+```
 
-`find . -name "*Zone.Identifier" -type f -delete`
+10. Você está pronto para começar!
 
-10. Você está pronto para começar\!
+# **Guia para desinstalar o Debian e remover os dados após as aulas**
 
-&nbsp;
-
----
-
-## **Guia para desinstalar o Debian e remover os dados após as aulas**
-
-### **Executando o Powershell**
+## **Executando o Powershell**
 
 *ATENÇÃO: Esses comandos vão remover completamente o Debian e todos os dados dentro das pastas dele\!*
 
@@ -68,17 +62,16 @@
 2. Abra o **Powershell** como administrador (deve aparecer na barra a direita, ou use o botão direito do mouse)  
 3. Na linha de comando do **Powershell** copie e cole os comandos um por linha dando enter:
 
-`wsl --terminate Debian`
-
-`wsl --unregister Debian`
-
-&nbsp;
+```{bash, eval=FALSE}
+wsl --terminate Debian
+wsl --unregister Debian
+```
 
 ---
 
-## **Guia de parâmetros para instalação manual**
+# **Guia de parâmetros para instalação manual**
 
-### **Manual do WSL**
+## **Manual do WSL**
 
 1. Acesse o site oficial do WSL [Instalar o WSL \| Microsoft Learn](https://learn.microsoft.com/pt-br/windows/wsl/install)&nbsp;  
 2. Na hora de executar a instalação utilize a Distro
