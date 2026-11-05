@@ -2,10 +2,14 @@
 
 ## Preparando os Datasets do caso clínico
 
+> [!IMPORTANT]
+> O nome da pasta pode ser qualquer um, mas **todos os comandos devem ser rodados de dentro dela**
+> (onde ficam `fastp_input/`, `genomas_completos/`, `resultados/`...). Na dúvida, rode `ls` e confira se essas pastas aparecem.
+
 1. Entre no Google Drive [[clicando aqui](https://drive.google.com/drive/folders/1QmEnn0U5iFkLSvpfMnQvpYXa_6PBbtQ-)]
 2. Baixe o arquivo `paired_end_data.rar`
 3. Baixe o arquivo `genomas_completos.rar`
-4. Cole os arquivos em `home/devuser/disciplina_gen_bac`
+4. Cole os arquivos na pasta do projeto (ex.: `~/disciplina_gen_bac`)
 
 <p align="center"><img src="img/image1.png" width="700"></p>
 
@@ -148,6 +152,24 @@ done
 
 <p align="center"><img src="img/image13.png" width="700"></p>
 
+> [!TIP]
+> **Não conseguiu rodar o SPAdes (ou travou no meio)?** Os resultados de backup estão neste repositório:
+> [`resultados/02_spades/`](https://github.com/Rodrigo-Lusa/disciplina_EPB_2026/tree/main/resultados/02_spades) — o `contigs.fasta` e o `spades.log` de cada amostra.
+>
+> Dá pra continuar a partir do `contigs.fasta`. O comando abaixo baixa os quatro e já salva com o nome que os próximos passos esperam:
+>
+> ```bash
+> mkdir -p genomas_completos/spades
+>
+> for sample in pc1 pc2 pc3 pc4
+> do
+>     wget -O genomas_completos/spades/${sample}_scaffolds.fasta \
+>         https://raw.githubusercontent.com/Rodrigo-Lusa/disciplina_EPB_2026/main/resultados/02_spades/${sample}/contigs.fasta
+> done
+> ```
+>
+> Os relatórios de backup do [fastp](https://github.com/Rodrigo-Lusa/disciplina_EPB_2026/tree/main/resultados/01_fastp) e do [QUAST](https://github.com/Rodrigo-Lusa/disciplina_EPB_2026/tree/main/resultados/03_quast) também estão no repositório.
+
 ## Métricas de qualidade
 
 ### QUAST
@@ -212,6 +234,12 @@ batcat pc1_scaffolds.fasta/short_summary.specific.bacteria_odb12.2.pc1_scaffolds
 ```
 
 4. Plotagem
+
+Se você entrou em `resultados/04_busco/busco_bacterias` para ver o resumo, volte para a pasta raiz antes:
+
+```bash
+cd ../../..
+```
 
 ```bash
 mkdir -p resultados/04_busco/plot
