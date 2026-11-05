@@ -15,11 +15,11 @@ conda config --add channels conda-forge
 conda config --set channel_priority strict
 
 # 3) Ambientes
-mamba create -y -n fastp     -c conda-forge -c bioconda fastp
-mamba create -y -n montagem  -c conda-forge -c bioconda "spades>=4.0.0" "seqtk=1.5"
-mamba create -y -n quast     -c conda-forge -c bioconda "python=3.11" "quast=5.3.0"
-mamba create -y -n busco     -c conda-forge -c bioconda busco
-mamba create -y -n mob_suite -c conda-forge -c bioconda "mob_suite=3.1.9"
+conda create -y -n fastp     -c conda-forge -c bioconda fastp
+conda create -y -n montagem  -c conda-forge -c bioconda "spades>=4.0.0" "seqtk=1.5"
+conda create -y -n quast     -c conda-forge -c bioconda "python=3.11" "quast=5.3.0"
+conda create -y -n busco     -c conda-forge -c bioconda busco
+conda create -y -n mob_suite -c conda-forge -c bioconda "mob_suite=3.1.9"
 
 # 4) Conferir
 conda env list
