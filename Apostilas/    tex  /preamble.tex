@@ -1,0 +1,243 @@
+% ============================================================
+% PREAMBLE.TEX — ELN / bookdown + xelatex
+% Versão robusta: rodapé padronizado, sem duplicações,
+% com suporte a química (mhchem), unidades (siunitx), CJK fallback.
+% ============================================================
+
+% ─────────────────────────────────────────────────────────────
+% 1. FONTES E IDIOMA
+% ─────────────────────────────────────────────────────────────
+\usepackage{fontspec}
+
+% Fonte monoespaçada para código
+\setmonofont{DejaVu Sans Mono}[Scale=0.85]
+
+% Fonte principal: sans-serif legível (DejaVu Sans cobre acentos PT + símbolos comuns)
+\setmainfont{DejaVu Sans}[Scale=0.92]
+\setsansfont{DejaVu Sans}[Scale=0.92]
+
+% Fallback CJK (chinês) — requer fonts-noto-cjk instalado no sistema
+% \usepackage{xeCJK}
+% \setCJKmainfont{Noto Serif CJK SC}
+% \setCJKsansfont{Noto Sans CJK SC}
+% \setCJKmonofont{Noto Sans Mono CJK SC}
+
+\usepackage{microtype}
+\usepackage[portuguese,main=english]{babel}
+
+% Entrelinha 1,5
+\usepackage{setspace}
+\onehalfspacing
+
+% ─────────────────────────────────────────────────────────────
+% 2. GEOMETRIA E LAYOUT
+% ─────────────────────────────────────────────────────────────
+\usepackage{geometry}
+\geometry{
+  a4paper,
+  margin=1.2cm,
+  headheight=14pt,
+  headsep=0.4cm,
+  footskip=0.9cm,   % aumentado para caber o rodapé de 3 colunas
+  twoside=false
+}
+
+\usepackage{pdflscape}
+\usepackage{afterpage}
+
+% ─────────────────────────────────────────────────────────────
+% 3. TABELAS (kableExtra / booktabs / longtable)
+% ─────────────────────────────────────────────────────────────
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{colortbl}
+\usepackage{xcolor}
+\usepackage{tabularx}
+\usepackage{tabulary}
+\usepackage{threeparttable}
+
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{Z}{>{\centering\arraybackslash}X}
+
+% ─────────────────────────────────────────────────────────────
+% 4. GRÁFICOS E FIGURAS
+% ─────────────────────────────────────────────────────────────
+\usepackage{graphicx}
+\usepackage{grfext}
+\usepackage{truncate}
+
+\graphicspath{%
+  {./figs/}%
+  {../figs/}%
+  {Imagens_Caderno_2026/}%
+}
+
+% ─────────────────────────────────────────────────────────────
+% 5. HIPERLINKS
+% ─────────────────────────────────────────────────────────────
+\usepackage[
+  colorlinks=true,
+  linkcolor=blue!60!black,
+  urlcolor=blue!60!black,
+  citecolor=blue!60!black,
+  filecolor=blue!60!black,
+  linktoc=all,
+  pdfborder={0 0 0},
+  pdfpagemode=UseOutlines,
+  bookmarks=true,
+  bookmarksopen=true,
+  bookmarksopenlevel=2
+]{hyperref}
+
+\usepackage{xurl}
+
+% ─────────────────────────────────────────────────────────────
+% 6. MATEMÁTICA, QUÍMICA E UNIDADES
+% ─────────────────────────────────────────────────────────────
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bm}
+\usepackage{bbm}
+\usepackage{dsfont}
+\usepackage{mathrsfs}
+\usepackage{eucal}
+\usepackage{upgreek}
+\usepackage{wasysym}
+\usepackage{stmaryrd}
+
+% Química: \ce{H2O}, \ce{H2SO4}, etc.
+\usepackage[version=4]{mhchem}
+
+% Unidades: \SI{5}{\micro\liter}, \SI{37}{\celsius}, \SI{12000}{rpm}
+\usepackage{siunitx}
+\sisetup{
+  detect-all,
+  group-separator={.},
+  output-decimal-marker={,}
+}
+
+% ─────────────────────────────────────────────────────────────
+% 7. LISTAS
+% ─────────────────────────────────────────────────────────────
+\usepackage{enumitem}
+\setlist{nosep}
+\setlist[itemize]{leftmargin=*}
+\setlist[enumerate]{leftmargin=*}
+
+% ─────────────────────────────────────────────────────────────
+% 8. FORMATAÇÃO DE TEXTO
+% ─────────────────────────────────────────────────────────────
+\usepackage{textcomp}
+
+\parindent=0mm
+\parskip=1.5ex plus0.5ex minus0.5ex
+
+% ─────────────────────────────────────────────────────────────
+% 9. CÓDIGO / VERBATIM
+% ─────────────────────────────────────────────────────────────
+\usepackage{fvextra}
+
+\fvset{
+  breaklines=true,
+  breakanywhere=true,
+  frame=single,
+  framesep=2mm,
+  fontsize=\small
+}
+
+\usepackage{csquotes}
+
+% ─────────────────────────────────────────────────────────────
+% 10. FIGURAS E LEGENDAS
+% ─────────────────────────────────────────────────────────────
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+
+\floatplacement{figure}{H}
+\floatplacement{table}{H}
+
+\captionsetup{
+  font=small,
+  labelfont=bf,
+  justification=raggedright,
+  singlelinecheck=false
+}
+
+% ─────────────────────────────────────────────────────────────
+% 11. PACOTES ÚTEIS
+% ─────────────────────────────────────────────────────────────
+\usepackage{adjustbox}
+\usepackage{calc}
+\usepackage{etoolbox}
+\usepackage{lastpage}   % para \pageref{LastPage} no rodapé
+
+% ─────────────────────────────────────────────────────────────
+% 12. CORREÇÕES DE COMPATIBILIDADE
+% ─────────────────────────────────────────────────────────────
+
+% Evitar que tabelas/verbatim herdem entrelinha 1,5
+\AtBeginEnvironment{longtable}{\singlespacing}
+\AtBeginEnvironment{tabular}{\singlespacing}
+\AtBeginEnvironment{tabularx}{\singlespacing}
+\AtBeginEnvironment{verbatim}{\singlespacing}
+\AtBeginEnvironment{Highlighting}{\singlespacing}
+
+% ─────────────────────────────────────────────────────────────
+% 13. APÊNDICES
+% ─────────────────────────────────────────────────────────────
+\usepackage[title]{appendix}
+\usepackage{footnotehyper}
+\usepackage{footnotebackref}
+
+% ─────────────────────────────────────────────────────────────
+% 14. RODAPÉ PADRONIZADO (único para todos os documentos)
+% ─────────────────────────────────────────────────────────────
+% Macros configuráveis. Cada Rmd pode sobrescrever no chunk de setup:
+%   cat("\\renewcommand{\\footLeft}{POP-042 -- Rev.~3}")
+%   cat("\\renewcommand{\\footCenter}{\\thepage\\ / \\pageref{LastPage}}")
+%   cat("\\renewcommand{\\footRight}{\\today}")
+% Se não sobrescrever, os fallbacks abaixo são usados.
+
+\providecommand{\popCode}{Código}
+\providecommand{\popVersion}{0}
+\providecommand{\popGenerated}{--/--/----}
+\providecommand{\popCommit}{unknown}
+
+\providecommand{\footLeft}{\popCode\ -- Rev.~\popVersion}
+\providecommand{\footCenter}{\thepage\ / \pageref{LastPage}}
+\providecommand{\footRight}{Gerado em \popGenerated}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+
+% Cabeçalho: número de página à direita, secção à esquerda
+\fancyhead[L]{\small\nouppercase{\leftmark}}
+\fancyhead[R]{\small\thepage}
+
+% Rodapé: três colunas com macros configuráveis
+\fancyfoot[L]{\small\footLeft}
+\fancyfoot[C]{\small\footCenter}
+\fancyfoot[R]{\small\footRight}
+
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% ─────────────────────────────────────────────────────────────
+% 15. CONFIGURAÇÕES FINAIS
+% ─────────────────────────────────────────────────────────────
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
+\Urlmuskip=0mu plus 1mu
+\hfuzz=1pt
+\vfuzz=1pt
+
+% Forçar oneside (redundância defensiva)
+\makeatletter
+\@twosidefalse
+\@mparswitchfalse
+\makeatother
