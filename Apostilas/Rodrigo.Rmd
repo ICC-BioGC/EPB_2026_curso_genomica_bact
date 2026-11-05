@@ -2,11 +2,10 @@
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
-  echo       = TRUE,
-  eval       = FALSE,   # comandos são de shell / conda; não executar no knit
-  message    = FALSE,
-  warning    = FALSE,
-  comment    = "#>"
+  echo    = TRUE,
+  eval    = FALSE,   # comandos são de shell / conda; não executar no knit
+  erro    = FALSE
+
 )
 ```
 
