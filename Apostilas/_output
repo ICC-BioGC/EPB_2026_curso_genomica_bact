@@ -1,5 +1,3 @@
-# POPs/Bancada/_output.yml
-# Padrão único de PDF para todos os POPs (solo e bookdown).
 # Fonte de verdade dos pacotes LaTeX: preamble.tex (não duplicar em extra_dependencies).
 
 pdf_document:
