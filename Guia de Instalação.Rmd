@@ -67,8 +67,6 @@ wsl --terminate Debian
 wsl --unregister Debian
 ```
 
----
-
 # **Guia de parâmetros para instalação manual**
 
 ## **Manual do WSL**
@@ -84,18 +82,22 @@ wsl --unregister Debian
 
 4. Atualize o Debian:
 
-`apt-get update -y`
-
-`apt-get upgrade -y`
+```{bash, eval=FALSE}
+apt-get update -y
+apt-get upgrade -y
+```
 
 *ATENÇÃO:* Certos pacotes como prokka, rgi e busco exigem baixar e configurar o banco de dados. Caso não queira fazer isso manualmente, tente finalizar o Debian com `wsl --terminate Debian` e executar o script. O script irá continuar a partir da sua instalação do WSL.
 
 5. Instale o Python
 
-`apt-get install -y python3 python3-pip python3-venv curl wget git build-essential bzip2 tar ca-certificates procps`
+```{bash, eval=FALSE}
+apt-get install -y python3 python3-pip python3-venv curl wget git build-essential bzip2 tar ca-certificates procps
+```
 
 6. Instale o gerenciador de pacotes conda, adicione o conda-forge como repositório e instale os seguintes pacotes em seus respectivos ambientes:
 
+```{bash, eval=FALSE}
 ´"busco" \= @(
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"busco"
@@ -177,6 +179,7 @@ wsl --unregister Debian
 &nbsp;&nbsp;&nbsp;&nbsp;)
 
 &nbsp;
+```
 
 &nbsp;
 
