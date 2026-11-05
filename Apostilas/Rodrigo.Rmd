@@ -1,0 +1,422 @@
+# MONTAGEM DE GENOMAS
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo       = TRUE,
+  eval       = FALSE,   # comandos são de shell / conda; não executar no knit
+  message    = FALSE,
+  warning    = FALSE,
+  comment    = "#>"
+)
+```
+
+## Preparando os Datasets do caso clínico
+
+> [!IMPORTANT]
+> O nome da pasta pode ser qualquer um, mas **todos os comandos devem ser rodados de dentro dela**
+> (onde ficam `fastp_input/`, `genomas_completos/`, `resultados/`...). Na dúvida, rode `ls` e confira se essas pastas aparecem.
+
+1. Entre no Google Drive [[clicando aqui](https://drive.google.com/drive/folders/1QmEnn0U5iFkLSvpfMnQvpYXa_6PBbtQ-)]
+2. Baixe o arquivo `paired_end_data.rar`
+3. Baixe o arquivo `genomas_completos.rar`
+4. Cole os arquivos na pasta do projeto (ex.: `~/disciplina_gen_bac`)
+
+```{r, echo=FALSE, out.width="700px", fig.align="center"}
+knitr::include_graphics("img/image1.png")
+```
+
+5. Depois rode os comandos um por linha dando enter:
+
+```{r, echo=FALSE, out.width="700px", fig.align="center"}
+knitr::include_graphics("img/image2.png")
+```
+
+6. Extraia os arquivos usando bdstar:
+
+- `bsdtar` = Programa utilizado para manipular arquivos compactados (tar, rar, zip etc.).
+- `-x` = Extract: extrair os arquivos.
+- `-f` = File: indica que o próximo argumento é o nome do arquivo.
+
+```{r, echo=FALSE, out.width="700px", fig.align="center"}
+knitr::include_graphics("img/image3.png")
+```
+
+7. Remova os arquivos zipados
+
+```{r, echo=FALSE, out.width="700px", fig.align="center"}
+knitr::include_graphics("img/image4.png")
+```
+
+O diretório deve estar assim:
+
+```{r, echo=FALSE, out.width="700px", fig.align="center"}
+knitr::include_graphics("img/image5.png")
+```
+
+---
+
+## Controle de qualidade das *Reads*
+
+<https://github.com/OpenGene/fastp>
+
+1. Instalar (uma vez) — ignore se já foi instalado:
+
+```bash
+mamba create -y -n fastp -c conda-forge -c bioconda fastp
+```
+
+2. Ative o ambiente conda
+
+```{r, echo=FALSE, out.width="700px", fig.align="center"}
+knitr::include_graphics("img/image6.png")
+```
+
+3. Criando os diretórios
+
+```bash
+mkdir -p fastp_input fastp_output resultados/01_fastp scripts
+```
+
+4. Baixando o script do fastp para rodar em paralelo
+
+```bash
+wget -O scripts/parallel.py \
+https://raw.githubusercontent.com/OpenGene/fastp/master/parallel.py
+```
+
+5. Reorganizando as pastas
+
+```bash
+for sample in pc1 pc2 pc3 pc4
+do
+    ln -s "$(pwd)/Paired-end_data/${sample}/forward.fastq.gz" \
+          "fastp_input/${sample}_R1.fastq.gz"
+
+    ln -s "$(pwd)/Paired-end_data/${sample}/reverse.fastq.gz" \
+          "fastp_input/${sample}_R2.fastq.gz"
+done
+```
+
+```{r, echo=FALSE, out.width="700px", fig.align="center"}
+knitr::include_graphics("img/image7.png")
+```
+
+6. Rodar o fastp em paralelo:
+
+```bash
+conda activate fastp
+python scripts/parallel.py \
+-i fastp_input/ -o fastp_output/ -r resultados/01_fastp/ -1 R1 -2 R2 -p 4 \
+-a "--thread 1 --detect_adapter_for_pe --trim_poly_g --cut_front --cut_right --cut_right_mean_quality 20 --qualified_quality_phred 20 --unqualified_percent_limit 30 --length_required 50"
+```
+
+```{r, echo=FALSE, out.width="700px", fig.align="center"}
+knitr::include_graphics("img/image8.png")
+```
+
+### Perguntas
+
+1. As reads têm qualidade boa o bastante para montar os genomas?
+2. Houve um aumento de qualidade pós QC?
+3. Quantos ciclos ocorreram em cada amostra?
+
+---
+
+## Montagem de genoma
+
+1. Instalar (uma vez — <https://github.com/ablab/spades>):
+
+```bash
+mamba create -y -n montagem -c conda-forge -c bioconda spades=4.0.0 seqtk
+```
+
+2. Ativar o ambiente conda de montagem
+
+```{r, echo=FALSE, out.width="700px", fig.align="center"}
+knitr::include_graphics("img/image9.png")
+```
+
+```bash
+nano scripts/02_montagem.sh
+```
+
+```bash
+#!/bin/bash
+
+mkdir -p resultados/02_spades
+mkdir -p logs/02_spades
+
+for sample in pc1 pc2 pc3 pc4
+do
+    spades.py \
+        --isolate \
+        -1 fastp_output/${sample}_R1.clean.fastq.gz \
+        -2 fastp_output/${sample}_R2.clean.fastq.gz \
+        -o resultados/02_spades/${sample} \
+        -t 4 \
+        -m 8 \
+        > logs/02_spades/${sample}.log 2>&1
+
+done
+
+echo "Montagens finalizadas!"
+```
+
+```{r, echo=FALSE, out.width="700px", fig.align="center"}
+knitr::include_graphics("img/image10.png")
+knitr::include_graphics("img/image11.png")
+knitr::include_graphics("img/image12.png")
+```
+
+3. Mover os scaffolds para a pasta dos genomas montados:
+
+```bash
+mkdir -p genomas_completos/spades
+
+for sample in pc1 pc2 pc3 pc4
+do
+    mv resultados/02_spades/${sample}/scaffolds.fasta \
+       genomas_completos/spades/${sample}_scaffolds.fasta
+done
+```
+
+```{r, echo=FALSE, out.width="700px", fig.align="center"}
+knitr::include_graphics("img/image13.png")
+```
+
+> [!TIP]
+> **Não conseguiu rodar o SPAdes (ou travou no meio)?** Os resultados de backup estão neste repositório:
+> [`resultados/02_spades/`](https://github.com/Rodrigo-Lusa/disciplina_EPB_2026/tree/main/resultados/02_spades) — o `contigs.fasta` e o `spades.log` de cada amostra.
+>
+> Dá pra continuar a partir do `contigs.fasta`. O comando abaixo baixa os quatro e já salva com o nome que os próximos passos esperam:
+>
+> ```bash
+> mkdir -p genomas_completos/spades
+>
+> for sample in pc1 pc2 pc3 pc4
+> do
+>     wget -O genomas_completos/spades/${sample}_scaffolds.fasta \
+>         https://raw.githubusercontent.com/Rodrigo-Lusa/disciplina_EPB_2026/main/resultados/02_spades/${sample}/contigs.fasta
+> done
+> ```
+>
+> Os relatórios de backup do [fastp](https://github.com/Rodrigo-Lusa/disciplina_EPB_2026/tree/main/resultados/01_fastp) e do [QUAST](https://github.com/Rodrigo-Lusa/disciplina_EPB_2026/tree/main/resultados/03_quast) também estão no repositório.
+
+---
+
+## Métricas de qualidade
+
+### QUAST
+
+1. Instalar (uma vez — <https://github.com/ablab/quast>):
+
+```bash
+mamba create -y -n quast -c conda-forge -c bioconda "python=3.11" quast
+```
+
+2. Ativar o ambiente e rodar:
+
+```bash
+conda activate quast
+quast \
+    genomas_completos/spades/pc1_scaffolds.fasta \
+    genomas_completos/spades/pc2_scaffolds.fasta \
+    genomas_completos/spades/pc3_scaffolds.fasta \
+    genomas_completos/spades/pc4_scaffolds.fasta \
+    -o resultados/03_quast \
+    -t 4
+```
+
+```{r, echo=FALSE, out.width="700px", fig.align="center"}
+knitr::include_graphics("img/image14.png")
+knitr::include_graphics("img/image15.png")
+```
+
+### BUSCO
+
+1. Instalar (uma vez — <https://gitlab.com/ezlab/busco>):
+
+```bash
+mamba create -y -n busco -c conda-forge -c bioconda busco
+```
+
+2. Criar a pasta do BUSCO
+
+```bash
+mkdir -p resultados/04_busco
+```
+
+3. Ativar o ambiente e rodar
+
+```bash
+conda activate busco
+
+busco \
+    -i genomas_completos/spades/ \
+    -m genome \
+    -l bacteria_odb12.2 \
+    -o busco_bacterias \
+    -c 4 \
+    --out_path resultados/04_busco
+```
+
+```{r, echo=FALSE, out.width="700px", fig.align="center"}
+knitr::include_graphics("img/image16.png")
+```
+
+```bash
+~/disciplina_gen_bac/resultados/04_busco/busco_bacterias$
+```
+
+```bash
+batcat pc1_scaffolds.fasta/short_summary.specific.bacteria_odb12.2.pc1_scaffolds.fasta.txt
+```
+
+4. Plotagem
+
+Se você entrou em `resultados/04_busco/busco_bacterias` para ver o resumo, volte para a pasta raiz antes:
+
+```bash
+cd ../../..
+```
+
+```bash
+mkdir -p resultados/04_busco/plot
+mv resultados/04_busco/busco_bacterias/* \
+   resultados/04_busco/plot/
+busco --plot resultados/04_busco/plot
+```
+
+```{r, echo=FALSE, out.width="700px", fig.align="center"}
+knitr::include_graphics("img/image17.png")
+```
+
+---
+
+## MOB-suite
+
+1. Instalar (uma vez — <https://github.com/phac-nml/mob-suite>):
+
+```bash
+mamba create -y -n mob_suite -c conda-forge -c bioconda mob_suite
+```
+
+2. Ativar o ambiente e baixar o banco (se não baixou ainda):
+
+```bash
+conda activate mob_suite && mob_init     # baixa o banco, ~2 GB
+```
+
+```{r, echo=FALSE, out.width="700px", fig.align="center"}
+knitr::include_graphics("img/image18.png")
+```
+
+3. Criar o script
+
+```bash
+nano scripts/
+```
+
+```bash
+#!/bin/bash
+
+mkdir -p resultados/05_mob logs/05_mob
+
+for sample in pc1 pc2 pc3 pc4
+do
+    mob_recon \
+        --infile genomas_completos/spades/${sample}_scaffolds.fasta \
+        --outdir resultados/05_mob/${sample} \
+        --num_threads 4 \
+        --run_overhang \
+        > logs/05_mob/${sample}.log 2>&1 &
+
+done
+
+wait
+
+echo "MOB-recon finalizado!"
+```
+
+```{r, echo=FALSE, out.width="700px", fig.align="center"}
+knitr::include_graphics("img/image19.png")
+knitr::include_graphics("img/image20.png")
+```
+
+### O que podemos ver?
+
+1. Os elementos móveis (IS) — `mge.report.txt`
+
+```bash
+cut -f2,3,5,11,12,16,17,19,21 mge.report.txt | column -t -s$'\t'
+```
+
+```{r, echo=FALSE, out.width="700px", fig.align="center"}
+knitr::include_graphics("img/image21.png")
+```
+
+2. Informações sobre os plasmídeos — `mobtyper_results.txt`
+
+```bash
+cut -f1,2,3,6,8,10,12,14 mobtyper_results.txt | column -t -s$'\t'
+```
+
+```{r, echo=FALSE, out.width="700px", fig.align="center"}
+knitr::include_graphics("img/image22.png")
+```
+
+3. Hospedeiros observados de cada plasmídeo — `mobtyper_results.txt`
+
+```bash
+cut -f1,14,17,20,21 mobtyper_results.txt | column -t -s$'\t'
+```
+
+```{r, echo=FALSE, out.width="700px", fig.align="center"}
+knitr::include_graphics("img/image23.png")
+```
+
+### Movendo os novos arquivos fasta para a anotação:
+
+```bash
+mkdir -p genomas_completos/replicons
+
+for pc in pc1 pc2 pc3 pc4; do
+  for f in resultados/05_mob/$pc/chromosome.fasta resultados/05_mob/$pc/plasmid_*.fasta; do
+    mv "$f" "genomas_completos/replicons/${pc}__$(basename "$f")"
+  done
+done
+```
+
+---
+
+## Como ficou o repositório no final?
+
+```text
+.
+├── Paired-end_data
+│   ├── pc1
+│   ├── pc2
+│   ├── pc3
+│   └── pc4
+├── busco_downloads
+│   └── lineages
+├── fastp_input
+├── fastp_output
+├── genomas_completos
+│   ├── replicons
+│   └── spades
+├── logs
+│   ├── 02_spades
+│   └── 05_mob
+├── resultados
+│   ├── 01_fastp
+│   ├── 02_spades
+│   ├── 03_quast
+│   ├── 04_busco
+│   └── 05_mob
+│       ├── pc1
+│       ├── pc2
+│       ├── pc3
+│       └── pc4
+└── scripts
+```
